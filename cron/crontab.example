@@ -1,0 +1,12 @@
+# GLPI Light Pipeline — cron jobs
+# Install: crontab cron/crontab.example
+
+# Daily pipeline at 2:00 AM (bronze → silver → gold → critical → alerts)
+0 2 * * * /path/to/glpi-light/cron/pipeline_daily.sh
+
+# Alternative: run each layer separately at staggered times
+# 0 2 * * * cd /path/to/glpi-light && python pipeline.py --bronze     >> logs/bronze.log 2>&1
+# 0 3 * * * cd /path/to/glpi-light && python pipeline.py --silver     >> logs/silver.log 2>&1
+# 0 4 * * * cd /path/to/glpi-light && python pipeline.py --gold       >> logs/gold.log 2>&1
+# 0 5 * * * cd /path/to/glpi-light && python pipeline.py --critical   >> logs/critical.log 2>&1
+# 0 6 * * * cd /path/to/glpi-light && python pipeline.py --alerts     >> logs/alerts.log 2>&1

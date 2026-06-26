@@ -1,0 +1,3 @@
+# DEV dependencies (model export). For production, use requirements-prod.txt
+transformers>=4.30
+torch>=2.0
