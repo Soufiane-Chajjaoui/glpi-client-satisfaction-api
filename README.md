@@ -1,1 +1,0 @@
-# glpi-sentiments-analysis-api
