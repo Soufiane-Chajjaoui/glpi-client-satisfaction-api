@@ -1,0 +1,56 @@
+name: glpi-light
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: glpi-light-pg
+    environment:
+      POSTGRES_DB: glpi_analytics
+      POSTGRES_USER: glpi
+      POSTGRES_PASSWORD: glpi123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glpi -d glpi_analytics"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: glpi-light-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: glpi-light-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: postgres
+      MYSQL_HOST: host.docker.internal
+      SMTP_HOST: mailhog
+      API_HOST: "0.0.0.0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+        reservations:
+          memory: 1G
+
+volumes:
+  pg_data:
