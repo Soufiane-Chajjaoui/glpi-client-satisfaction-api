@@ -2,6 +2,8 @@
 
 ## Objectif global de la couche Gold
 
+**Propriétaires :** Soufiane CHAJJAOUI · Hicham KAOU · Manal LKHMAMARA
+
 La couche **Gold** est la dernière étape de l'architecture médaillon (Bronze → Silver → **Gold**). Elle transforme les données nettoyées et enrichies de Silver en un **schéma en étoile** (star schema) prêt pour l'analytics, le reporting et l'API REST.
 
 Elle produit :
